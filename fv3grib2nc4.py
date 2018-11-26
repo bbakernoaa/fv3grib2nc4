@@ -72,13 +72,13 @@ def change_file(finput,verbose=False):
     wgrib2 = get_exec_path('wgrib2', verbose=verbose)
 
     # ENTIRE ATMOSPHERE GRIB LAYER
-    cmd = '%s %s -match "entire atmosphere:" -nc_nlev 1 -append -netcdf %s.entire_atm.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "entire atmosphere:" -nc_nlev 1 -append  -set_ext_name 1 -netcdf %s.entire_atm.nc' % (wgrib2, fname, fname)
     execute_subprocess(cmd, verbose=verbose)
     # 1 hybrid level:
-    cmd = '%s %s -match "1 hybrid level:" -nc_nlev 65 -append -netcdf %s.hybrid.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "1 hybrid level:" -nc_nlev 65 -append  -set_ext_name 1 -netcdf %s.hybrid.nc' % (wgrib2, fname, fname)
     execute_subprocess(cmd, verbose=verbose)
     # surface:
-    cmd = '%s %s -match "surface:" -nc_nlev 1 -append -netcdf %s.surface.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "surface:" -nc_nlev 1 -append  -set_ext_name 1 -netcdf %s.surface.nc' % (wgrib2, fname, fname)
     execute_subprocess(cmd, verbose=verbose)
 
 
