@@ -64,21 +64,21 @@ def chdir(fname):
     return os.path.basename(fname)
 
 
-def change_file(finput,verbose=False):
+def change_file(finput,verbose=False,outdir='./'):
     # first change directory and get file name
     fname = chdir(finput)
-
+    out = os.path.abspath(outdir)
     # this will create 3 files and append to them
     wgrib2 = get_exec_path('wgrib2', verbose=verbose)
-
+    
     # ENTIRE ATMOSPHERE GRIB LAYER
-    cmd = '%s %s -match "entire atmosphere:" -nc_nlev 1 -append -set_ext_name 1 -netcdf %s.entire_atm.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "entire atmosphere:" -nc_nlev 1 -append -set_ext_name 1 -netcdf %s/%s.entire_atm.nc' % (wgrib2, fname, out, fname)
     execute_subprocess(cmd, verbose=verbose)
     # 1 hybrid level:
-    cmd = '%s %s -match "1 hybrid level:" -append -set_ext_name 1 -netcdf %s.hybrid.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "1 hybrid level:" -append -set_ext_name 1 -netcdf %s/%s.hybrid.nc' % (wgrib2, fname, out, fname)
     execute_subprocess(cmd, verbose=verbose)
     # surface:
-    cmd = '%s %s -match "surface:" -nc_nlev 1 -append -set_ext_name 1 -netcdf %s.surface.nc' % (wgrib2, fname, fname)
+    cmd = '%s %s -match "surface:" -nc_nlev 1 -append -set_ext_name 1 -netcdf %s/%s.surface.nc' % (wgrib2, fname, out, fname)
     execute_subprocess(cmd, verbose=verbose)
 
 
@@ -87,11 +87,13 @@ if __name__ == '__main__':
 
     parser = ArgumentParser(description='convert nemsio file to netCDF4 file', formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument('-f', '--files', help='input nemsio file name', type=str, required=True)
+    parser.add_argument('-o', '--output_dir', help='output directory path', default='./', required=False)
     parser.add_argument('-v', '--verbose', help='print debugging information', action='store_true', required=False)
     args = parser.parse_args()
 
     finput = args.files
     verbose = args.verbose
+    outdir = args.output_dir
 
     files = sorted(glob(finput))
     for i,j in enumerate(files):
@@ -99,7 +101,7 @@ if __name__ == '__main__':
 
     if len(files) == 1:
         finput = files[0]
-        change_file(finput,verbose=verbose)
+        change_file(finput,verbose=verbose,outdir=outdir)
     else:
         for i in files:
             finput = i
