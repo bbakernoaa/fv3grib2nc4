@@ -47,7 +47,7 @@ def get_exec_path(exec_name, verbose=False):
     :param type: str
     '''
 
-    exec_path_def = '/nwprod2/grib_util.v1.0.0/exec/%s' % exec_name
+    exec_path_def = '/gpfs/dell1/nco/ops/nwprod/grib_util.v1.1.1/exec/%s' % exec_name
 
     exec_path = find_executable(exec_name)
     if exec_path is None:
