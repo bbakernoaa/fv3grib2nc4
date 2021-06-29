@@ -49,10 +49,18 @@ def get_exec_path(exec_name, verbose=False):
 
     exec_path_def = '/nwprod2/grib_util.v1.0.0/exec/%s' % exec_name
 
-    exec_path = find_executable(exec_name)
-    if exec_path is None:
-        exec_path = exec_path_def
-
+#     exec_path = find_executable(exec_name)
+#     if exec_path is None:
+#         exec_path = exec_path_def
+    # WCOSS
+    if os.path.exists('/nwprod2/grib_util.v1.0.0/exec/%s' % exec_name):
+        exec_path = '/nwprod2/grib_util.v1.0.0/exec/%s' % exec_name
+    #HERA
+    elif os.path.exists('/apps/wgrib2/2.0.8/intel/18.0.3.222/bin/%s' % exec_name):
+        exec_path = '/apps/wgrib2/2.0.8/intel/18.0.3.222/bin/%s' % exec_name
+    # ERROR
+    else:
+        print("ERROR.... WGRIB2 EXECUTABLE NOT FOUND")
     if verbose:
         print( '%s: %s' % (exec_name, exec_path))
 
